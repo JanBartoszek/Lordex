@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Search</title>
+        <link rel="stylesheet" type="text/css" href="/static/style_search.css"> 
+        </head>
+    <body>
+        <h3>search results</h3>  
+        <p></p>
+        <p>Desired phrase was found in:</p>
+
+        {% if questions is defined and questions|length > 0 %}
+
+        <div id="Questions"><p>Questions:</p></div>
+                    <!-- <th>id:</th><th>submission time:</th><th>view number:</th><th>vote number:</th><th>title:</th><th>message:</th><th>image:</th> -->
+                {% for dict in questions %}
+
+                {% if search_input in dict.title %}    
+                    <div class="hl">
+
+                            {{dict.title}}
+                    </div>
+                {% endif %}
+<!-- 
+                <div class="image">
+                        {% if dict.image == '' or dict.image == None or dict.image == 'images/image1.png' %}
+                        <img src='https://avatars1.githubusercontent.com/u/18133?s=400&v=4' width="30" height="30" alt = 'https://avatars1.githubusercontent.com/u/18133?s=400&v=4'
+                        {% else %}
+                        <img src={{dict.image}} alt = https://avatars1.githubusercontent.com/u/18133?s=400&v=4  width="30" height="30">    
+                        {% endif %}
+                </div> -->
+
+                <div class="flexbox">
+
+                    <div>Time: {{dict.submission_time}}</div>
+                    <div>Views: {{dict.view_number}}</div>
+                    <div>Votes: {{dict.vote_number}}</div>
+                    <div>Message: {{dict.message}}</div>
+                    <div>                        
+                        <form action = '/question/{{ dict.id }}' method="GET">
+                        <a href = '/question/{{ dict.id }}' name = "question_link">Visit</a>
+                        </form>
+                    </div>
+                </div>                  
+                {% endfor %}
+        {% else %}
+        <p>Not found in questions!</p>
+        {%endif%}
+
+
+
+        {% if answers is defined and answers|length > 0 %}
+        <div id="Answers"><p>Answers:</p></div>
+
+            {% for dict in answers %}
+                {% if search_input in dict.message %}
+
+                <div class="message"> {{dict.message}} </div>
+
+                {% endif %}
+
+                <div class='flexbox2'>
+
+                    <div>Time: {{dict.submission_time}}</div>
+                    <div>Votes: {{dict.vote_number}}</div>
+                    <div>
+                        <form action = '/question/{{ dict.question_id }}' method="GET">
+                            Question:
+                        <a href = '/question/{{ dict.question_id }}' name = "question_link">{{dict.title}}</a>
+                        </form>
+                    </div>
+                     
+                </div>
+            {% endfor %}
+        {% else %}
+        <p>Not found in answers!</p>
+        {%endif%}
+        <p><a href='/'>Back to main!</a></p>
+
+
+    </body>
+</html>

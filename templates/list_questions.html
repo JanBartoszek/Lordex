@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/static/style_list_latest_five_questions.css"> 
+
+        <title>AskMate--all questions</title>
+    </head>
+    <body>
+        <h1>all questions</h1>
+
+        <div class="go">
+                <form action="/search" method = "POST">
+                    <label for="search_input">Search for:</label>  
+                    <textarea id="search_input" name="search_input" rows="1" cols="80" minlength="3" maxlength="50" placeholder="Type here..."></textarea>
+                    <p><button type="submit" value="Submit">Go</button></p>
+                </form>
+                </div>
+        
+                        {% for dict in dict_sorted_by_time %}
+                        <div class="block">
+                            <div class="flexbox">
+                                <div>{{dict.title}}</div>
+                                <div>
+                                    {% if dict.image == '' or dict.image == None or dict.image == 'images/image1.png' %}
+                                    <img src='https://avatars1.githubusercontent.com/u/18133?s=400&v=4' width="30" height="30" alt = 'https://avatars1.githubusercontent.com/u/18133?s=400&v=4'>
+                                    {% else %}
+                                    <img src={{dict.image}} alt = https://avatars1.githubusercontent.com/u/18133?s=400&v=4  width="30" height="30">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div id="message">{{dict.message}}</div>
+                            <div class="flexbox2">
+                                <div>Time: {{dict.submission_time}}</div>
+                                <div>Views: {{dict.view_number}}</div>
+                                <div>Votes: {{dict.vote_number}}</div>
+                                <div>
+                                    <form action = '/question/{{ dict.id }}' method="GET">
+                                    <a href = '/question/{{ dict.id }}' name = "question_link">Visit</a>
+                                    </form>
+                                </div>
+                            </div>
+                        
+                        <form action='/' method = "POST">
+                                <button type="submit" name="UP" value="{{dict.id}}">UP</button>
+                                <button type="submit" name="DOWN" value="{{dict.id}}">DOWN</button>
+                        </form>
+                                
+                        <a href='/question/{{ dict.id }}/delete'>Delete!</a>
+                            
+                        {% endfor %}
+                    </div>
+        <p></p>
+        <a href='/new_question'>    Click to ask a question</a><br>
+        <p><a href='/'>Back to main!</a></p>
+    </body>
+</html> 

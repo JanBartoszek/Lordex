@@ -1,0 +1,65 @@
+body{
+    background-color: #5CDB95;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 24px;
+    color: #edf5e1;
+    text-align: center;
+    padding: 0px 5px 0px 5px;
+    margin-bottom: 5px;
+
+}
+
+h1{
+    font-size: 72px;
+    margin: 72px 72px 36px 72px;
+}
+
+.tags{
+    margin: 0px 0px 0px 0px;
+    font-size: 18px;
+}
+
+.flexbox_tags{
+    display: flex;
+    justify-content: center;
+}
+
+.flexbox_tags > div {
+    align-content: center;
+    background-color: #black;
+    margin: 3px 10px 3px 10px;
+    font-size: 12px;
+  }
+
+h3{
+font-size: 18px;
+text-align: left;
+}
+
+.question_comments{
+    font-size: 18px;
+    text-align: left;
+
+}
+
+.answers{
+    text-align: left;
+    font-size: 18px;
+
+
+
+}
+
+#answer{
+    text-align: left;
+    position: relative;
+    left: 30px;
+}
+
+#comment{
+    text-align: left;
+    position: relative;
+    left: 60px;
+    font-size: 12px;
+
+}

@@ -1,0 +1,55 @@
+body{
+    background-color: #5CDB95;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 24px;
+    color: #edf5e1;
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+}
+
+h3 {
+    font-size: 72px;
+    margin: 72px 72px 36px 72px;
+}
+
+.hl{
+    color: wheat;
+    text-shadow: 1px 1px #05386B;
+    text-decoration: underline;
+    margin: 10px 10px 24px 10px;
+}
+
+
+.flexbox{
+    display: flex;
+    justify-content: center;
+}
+
+.flexbox > div {
+    align-content: center;
+    background-color: #black;
+    margin: 3px 10px 3px 10px;
+    font-size: 12px;
+  }
+
+
+.message{
+    color: wheat;
+    text-shadow: 1px 1px #05386B;
+    text-decoration: underline;
+    margin: 24px 10px 24px 10px;
+}
+  
+.flexbox2{
+    display: flex;
+    justify-content: center;
+}
+
+.flexbox2 > div {
+    align-content: center;
+    background-color: #black;
+    margin: 3px 10px 3px 10px;
+    font-size: 12px;
+  }
+
+

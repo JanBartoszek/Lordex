@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/static/style_display.css"> 
+
+        <title>Ask</title>
+    </head>
+    <body>
+        <h1>{{title}}</h1>
+
+
+
+
+
+        <div class="flexbox_tags">
+                <div>Tags:</div>
+                <div>   
+                    {% for dictio in tags %}
+                    {{ ' -' + dictio.name + '- ' }}                     
+                    {% endfor %}
+                </div>
+                <div><a href='/question/{{ question_id }}/new_tag'>Add tag</a></div>
+        </div>
+
+
+
+
+        <h3>{{ message }}</h3>
+
+        <div class="question_comments">
+            <h3>Comments to question:</h3>                
+                
+                {% for comment in comment_dict_sorted_by_time %}   
+                    {% if question_id == comment.question_id %}                    
+                        
+                            {{comment.submission_time}}{{comment.message}}<a href = '/comments/{{ comment.id }}/delete' name = 'delete_comment' >Delete!</a>
+
+
+                            
+                            
+                    {% endif %}                 
+                {% endfor %}   
+                        <form action = '/question/{{ question_id }}/new-comment' metod = "GET">
+                        <a href = '/question/{{ question_id }}/new-comment' name = "comment_link" >add comment to question</a><br>
+                        </form>
+        </div>
+
+
+        
+
+        <div class="answers">          
+            <p><h3>Answers:</h3></p>
+            <p></p>                       
+                {% for dict in dict_table %}
+                    {% if dict.question_id == question_id %}  
+                    <div id="answer">
+                        {{dict.message}}                  
+                        <p id="inner_answer">Time: {{dict.submission_time}} Votes: {{dict.vote_number}} 
+                        </p>
+                        <form action='/question/{{ question_id }}' method = "POST">
+                        
+                                <button type="submit" name="UP" value="{{dict.id}}">UP</button>
+                                <button type="submit" name="DOWN" value="{{dict.id}}">DOWN</button>
+                                <a href='/answer/{{ dict.id }}/delete'>Delete!</a>
+                        </form>
+                    </div>
+                    <div id="comment">
+                            comments:
+                            {% for comment in comment_dict_sorted_by_time %}   
+                                {% if dict.id == comment.answer_id %}                    
+                                    
+                                        <a href = '/comments/{{ comment.id }}/delete' name = 'delete_comment' >Delete!</a>
+                                        
+                                {% endif %}                 
+                            {% endfor %}
+                        
+                            <form action = '/answer/{{dict.id}}/new-comment' metod = "GET">
+                            <a href = '/answer/{{dict.id}}/new-comment' name = "comment_link" >add comment to answer</a>
+                            </form>
+                    </div>
+                        
+                        {% endif %}
+                {% endfor %}            
+            <p><a href='/question/{{question_id}}/new_answer'>Post an answer!</a></p>
+            <p></p>
+        </div>  
+        <p>or</p>
+        <p></p>
+        <p><a href='/'>Back to main!</a></p>
+    </body>
+</html>
