@@ -4,10 +4,29 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="/static/style_list_latest_five_questions.css"> 
 
+    
         <title>AskMate Homepage</title>
     </head>
+    
     <body>
+        <div class="top_buttons">
+            <p></p>
+            <a href='/new_question'>    Click to ask a question</a>
+            <p></p>
+            <a href='/list_question'>   Go to all questions</a>
+            <p></p>
+        </div>
+
         <h1>AskMate Homepage</h1>
+
+
+
+        <div class="user_container">
+        <form action="/register">
+            <button type="button" class="user">Log in</button>
+            <button type="button" class="user">Register</button>
+        </form>
+        </div>
 
         <div class="go">
         <form action="/search" method = "POST">
@@ -50,9 +69,6 @@
                     
                 {% endfor %}
             </div>
-        <p></p>
-        <a href='/new_question'>    Click to ask a question</a>
-        <p></p>
-        <a href='/list_question'>   Go to all questions</a>
+
     </body>
 </html> 
