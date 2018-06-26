@@ -190,13 +190,20 @@ def add_new_user():
     password = "test_password"
     name = "test_name"
     time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    data = [id, password, name, time]
+    data = [id, name, password, time]
     data_manager.insert_dict_into_database(table, data)
     return redirect('/')
 
 @app.route("/register")
 def register():
     return render_template('register.html')
+
+
+@app.route("/users_list")
+def users_list():
+    table = "user"
+    users_datadict = data_manager.get_list_of_dicts_from_database(table)
+    return render_template('users_list.html', users_datadict=users_datadict)
 
 
 
