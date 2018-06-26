@@ -197,6 +197,7 @@ def get_tags_by_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
+<<<<<<< HEAD
 def insert_user_data(cursor, data):
     cursor.execute("""
                     SELECT DISTINCT name
@@ -205,3 +206,22 @@ def insert_user_data(cursor, data):
                     WHERE question_id = (%s);
                    """, (question_id,))
     
+=======
+def delete_tags_from_question(cursor, question_id):
+    cursor.execute(
+        sql.SQL("""
+                    DELETE FROM question_tag
+                    WHERE question_id = %s;
+                """), str(question_id)
+                   )
+
+
+@database_common.connection_handler
+def delete_comments_from_question(cursor, question_id):
+    cursor.execute(
+        sql.SQL("""
+                    DELETE FROM comment
+                    WHERE question_id = %s;
+                """), str(question_id)
+                   )
+>>>>>>> master

@@ -132,6 +132,8 @@ def answer_vote(question_id):
 @app.route('/question/<question_id>/delete')
 def delete_question_and_its_answers(question_id):
     question_id = int(question_id)
+    data_manager.delete_comments_from_question(question_id)
+    data_manager.delete_tags_from_question(question_id)
     logic.delete_question_and_its_answers(question_id)
     return redirect('/')
 
@@ -191,6 +193,11 @@ def add_new_user():
     data = [id, password, name, time]
     data_manager.insert_dict_into_database(table, data)
     return redirect('/')
+
+@app.route("/register")
+def register():
+    return render_template('register.html')
+
 
 
 if __name__ == '__main__':
