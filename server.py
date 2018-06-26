@@ -1,3 +1,4 @@
+import user
 import data_manager
 import logic
 import test
@@ -8,6 +9,8 @@ from datetime import datetime
 question_table = "question"
 answer_table = "answer"
 comment_table = "comment"
+user_table = "user"
+
 
 app = Flask(__name__)
 
@@ -205,6 +208,11 @@ def users_list():
     users_datadict = data_manager.get_list_of_dicts_from_database(table)
     return render_template('users_list.html', users_datadict=users_datadict)
 
+
+@app.route("/register/new_user", methods = ["POST"])
+def register_new_user():
+    user.add_new_user()
+    return redirect('/')
 
 
 if __name__ == '__main__':
