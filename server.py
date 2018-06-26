@@ -1,3 +1,4 @@
+import user
 import data_manager
 import logic
 import test
@@ -8,6 +9,8 @@ from datetime import datetime
 question_table = "question"
 answer_table = "answer"
 comment_table = "comment"
+user_table = "user"
+
 
 app = Flask(__name__)
 
@@ -166,9 +169,6 @@ def search_display():
     return render_template('search.html', questions = questions, answers = answers, search_input = search_input)
 
 
-
-
-
 # new tag route
 
 
@@ -183,21 +183,15 @@ def new_tag(question_id):
         return redirect("/question/{}".format(question_id))
 
 
-@app.route("/new_user")
-def add_new_user():
-    table = "user"
-    id = logic.generate_new_id_from_user_table(table)
-    password = "test_password"
-    name = "test_name"
-    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    data = [id, password, name, time]
-    data_manager.insert_dict_into_database(table, data)
-    return redirect('/')
-
 @app.route("/register")
 def register():
     return render_template('register.html')
 
+
+@app.route("/register/new_user", methods = ["POST"])
+def register_new_user():
+    user.add_new_user()
+    return redirect('/')
 
 
 if __name__ == '__main__':

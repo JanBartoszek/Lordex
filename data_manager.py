@@ -3,11 +3,12 @@ from collections import OrderedDict
 from psycopg2 import sql, Binary
 import database_common
 
+
 question_dict = {"id": "0", "submission_time": "0", "view_number": "0",
                  "vote_number": "0", "title": "", "message": "", "image": ""}
 answer_dict = {"id": "0", "submission_time": "0", "vote_number": "0", "question_id": "0", "message": "", "image": ""}
 comment_dict = {"id": "0", "question_id": None, "answer_id": None, "message": "", "submission_time": "0", "edited_number":"0"}
-
+user_dict = {"id": 0, "user_name": "", "user_password": "", "registration_time": ""}
 
 @database_common.connection_handler
 def get_list_of_dicts_from_database(cursor, table):
@@ -22,7 +23,6 @@ def get_list_of_dicts_from_database(cursor, table):
 
 @database_common.connection_handler
 def insert_dict_into_database(cursor, table, list_to_add):
-    print("1!!!!!")
     if table == "question":
         cursor.execute(
             sql.SQL("""
@@ -49,7 +49,6 @@ def insert_dict_into_database(cursor, table, list_to_add):
                    )
 
     if table == "user":
-        print("2!!!!!")
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
@@ -197,16 +196,6 @@ def get_tags_by_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
-<<<<<<< HEAD
-def insert_user_data(cursor, data):
-    cursor.execute("""
-                    SELECT DISTINCT name
-                    FROM tag
-                    JOIN question_tag ON tag.id = tag_id
-                    WHERE question_id = (%s);
-                   """, (question_id,))
-    
-=======
 def delete_tags_from_question(cursor, question_id):
     cursor.execute(
         sql.SQL("""
@@ -224,4 +213,3 @@ def delete_comments_from_question(cursor, question_id):
                     WHERE question_id = %s;
                 """), str(question_id)
                    )
->>>>>>> master
