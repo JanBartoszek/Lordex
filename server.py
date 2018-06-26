@@ -3,6 +3,7 @@ import logic
 import test
 from flask import Flask, render_template, redirect, request, session
 import requests
+from datetime import datetime
 
 question_table = "question"
 answer_table = "answer"
@@ -180,10 +181,20 @@ def new_tag(question_id):
         return redirect("/question/{}".format(question_id))
 
 
+@app.route("/new_user")
+def add_new_user():
+    table = "user"
+    id = logic.generate_new_id_from_user_table(table)
+    password = "test_password"
+    name = "test_name"
+    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data = [id, password, name, time]
+    data_manager.insert_dict_into_database(table, data)
+    return redirect('/')
+
+
 if __name__ == '__main__':
     app.secret_key = 'webex'  
     app.run(
         debug=True,  
         port=5000)
-
-

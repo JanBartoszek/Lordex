@@ -22,6 +22,7 @@ def get_list_of_dicts_from_database(cursor, table):
 
 @database_common.connection_handler
 def insert_dict_into_database(cursor, table, list_to_add):
+    print("1!!!!!")
     if table == "question":
         cursor.execute(
             sql.SQL("""
@@ -43,6 +44,16 @@ def insert_dict_into_database(cursor, table, list_to_add):
             sql.SQL("""
                         INSERT INTO {}
                         VALUES (%s, %s, %s, %s, %s, %s);
+                    """).format(sql.Identifier(table)),
+                        list_to_add
+                   )
+
+    if table == "user":
+        print("2!!!!!")
+        cursor.execute(
+            sql.SQL("""
+                        INSERT INTO {}
+                        VALUES (%s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                    )
@@ -183,3 +194,14 @@ def get_tags_by_question_id(cursor, question_id):
     
     list_of_dicts = cursor.fetchall()
     return list_of_dicts
+
+
+@database_common.connection_handler
+def insert_user_data(cursor, data):
+    cursor.execute("""
+                    SELECT DISTINCT name
+                    FROM tag
+                    JOIN question_tag ON tag.id = tag_id
+                    WHERE question_id = (%s);
+                   """, (question_id,))
+    
