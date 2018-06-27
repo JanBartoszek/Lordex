@@ -11,10 +11,11 @@
         
             
                 {% for dict in users_datadict %}
-                    <a href='/'>{{ dict.user_name }}</a><br>
+                    {%set user_id= dict.user_id%}
+                    <a href='/user/{{user_id}}'>{{ dict.user_name }}</a><br>
                 {% endfor %}
             
-        
+
         
         <p><a href='/'>Back to main!</a></p>
     </body>

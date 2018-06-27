@@ -1,4 +1,5 @@
 import csv
+import user
 from collections import OrderedDict
 from psycopg2 import sql, Binary
 import database_common
@@ -227,6 +228,7 @@ def check_if_user_in_database(cursor, user_input):
     return user
 
 
+<<<<<<< HEAD
 @database_common.connection_handler
 def check_if_user_in_database_return_name(cursor, user_input):
     cursor.execute(
@@ -234,10 +236,21 @@ def check_if_user_in_database_return_name(cursor, user_input):
                     SELECT user_name FROM "user"
                     WHERE user_name = %(user_input)s;
                 """), {'user_input': user_input}
+=======
+
+@database_common.connection_handler
+def user_questions(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "question"
+                    WHERE user_id = %s;
+                """), str(user_id)
+>>>>>>> 7bd4c19bfaa30f1cdda14e6f7a40dc003de068c9
                    )
     user = cursor.fetchall()
     return user
 
+<<<<<<< HEAD
 
 @database_common.connection_handler
 def check_if_password_correct(cursor, user_input):
@@ -308,3 +321,64 @@ def get_question_id_by_answer_id(cursor, answer_id):
 
     list_of_dicts = cursor.fetchall()
     return list_of_dicts[0]["id"]
+=======
+@database_common.connection_handler
+def user_answers(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "answer"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def user_comments(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "comment"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+
+
+@database_common.connection_handler
+def count_user_questions(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "question"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def count_user_answers(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "answer"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def count_user_comments(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "comment"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+
+
+>>>>>>> 7bd4c19bfaa30f1cdda14e6f7a40dc003de068c9
