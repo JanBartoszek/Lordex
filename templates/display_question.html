@@ -65,7 +65,11 @@
                         
                                 <button type="submit" name="UP" value="{{dict.id}}">UP</button>
                                 <button type="submit" name="DOWN" value="{{dict.id}}">DOWN</button>
-                                <a href='/answer/{{ dict.id }}/toggle_accepted'>Toggle if accepted!</a>
+                                
+                                {% if user_in_database == user_id %}
+                                    <a href='/answer/{{ dict.id }}/toggle_accepted'>Toggle if accepted!</a>
+                                {% endif %}
+                                
                                 <a href='/answer/{{ dict.id }}/delete'>Delete!</a>
                         </form>
                     </div>
