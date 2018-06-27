@@ -213,8 +213,14 @@ def users_list():
 
 @app.route("/register/new_user", methods = ["POST"])
 def register_new_user():
-    user.add_new_user()
-    return redirect('/')
+    user_in_database = user.check_if_user_exist()
+    if user_in_database == False:
+        user.add_new_user()
+        return redirect('/')
+    else:
+        return render_template('register.html', user_in_database = user_in_database)
+
+
 
 @app.route("/log_in")
 def log_in():
@@ -222,11 +228,11 @@ def log_in():
 
 @app.route("/log_in", methods = ["POST"])
 def change_current_user():
-    user_in_database = user.change_current_user()
-    if user_in_database != []:
+    user_in_database, check_if_password_correct = user.change_current_user()
+    if user_in_database != [] and check_if_password_correct != "wrong":
         return redirect('/')
     else:
-        return render_template('log_in.html', user_in_database = user_in_database)
+        return render_template('log_in.html', user_in_database = user_in_database, check_if_password_correct = check_if_password_correct)
 
 @app.route("/log_out")
 def log_out():

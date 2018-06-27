@@ -16,6 +16,12 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Git-logo.svg/1200px-Git-logo.svg.png" alt="Avatar" class="avatar">
         </div>
 
+        {% if user_in_database == True %}
+        <script type="text/javascript">
+        alert("USER ALREADY EXIST")
+        </script>
+        {% endif %}
+
         <div class="container">
             <label for="user_name">
                 <b>Username</b>

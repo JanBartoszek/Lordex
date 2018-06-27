@@ -24,6 +24,18 @@ def generate_new_id_from_user_table(cursor,table):
     except IndexError:
         return 1
 
+
+def check_if_user_exist():
+    user_input = request.form.get('user_name')
+    user_in_database = data_manager.check_if_user_in_database_return_name(user_input)
+    user_in_database = user_in_database[0]['user_name']
+    if user_input == user_in_database:
+        return True
+    else:
+        return False
+
+
+
 def add_new_user():
     data_manager.user_dict['id'] = generate_new_id_from_user_table(server.user_table)
     data_manager.user_dict['user_name'] = request.form.get('user_name')
@@ -34,15 +46,21 @@ def add_new_user():
 
 
 def change_current_user():
-    user_input = request.form.get('user_name')
-    user_in_database = data_manager.check_if_user_in_database(user_input)
-    if user_in_database != []:
+    user_input_login = request.form.get('user_name')
+    user_input_password = request.form.get('user_password')
+    user_in_database = data_manager.check_if_user_in_database(user_input_login)
+    if user_in_database == []:
+        check_if_password_correct = "wrong"
+        return user_in_database, check_if_password_correct
+    check_if_password_correct = data_manager.check_if_password_correct(user_input_login)
+    check_if_password_correct = check_if_password_correct[0]['user_password']
+    if user_in_database != [] and check_if_password_correct == user_input_password:
         global current_user
         current_user = user_in_database[0]['user_id']
-        return user_in_database
+        return user_in_database, check_if_password_correct
     else:
-        return user_in_database
-
+        check_if_password_correct = "wrong"
+        return user_in_database, check_if_password_correct
 
 
 def log_out():
