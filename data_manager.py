@@ -224,3 +224,29 @@ def check_if_user_in_database(cursor, user_input):
                    )
     user = cursor.fetchall()
     return user
+
+
+@database_common.connection_handler
+def check_if_user_in_database_return_name(cursor, user_input):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT user_name FROM "user"
+                    WHERE user_name = %(user_input)s;
+                """), {'user_input': user_input}
+                   )
+    user = cursor.fetchall()
+    return user
+
+
+@database_common.connection_handler
+def check_if_password_correct(cursor, user_input):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT user_password FROM "user"
+                    WHERE user_name = %(user_input)s;
+                """), {'user_input': user_input}
+                   )
+    password = cursor.fetchall()
+    return password
+
+
