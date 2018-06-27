@@ -230,8 +230,20 @@ def log_out():
     user.log_out()
     return redirect('/')
 
+@app.route("/user/<user_id>")
+def user_profile(user_id):
+    user_id = int(user_id)
+    question = data_manager.user_questions(user_id)
+    answer = data_manager.user_answers(user_id)
+    comment = data_manager.user_comments(user_id)
+    users_datadict = data_manager.get_list_of_dicts_from_database(user_table)
+    count_question = data_manager.count_user_questions(user_id)
+    count_answer = data_manager.count_user_answers(user_id)
+    count_comment = data_manager.count_user_comments(user_id)
+    return render_template("User_profile.html", users_datadict = users_datadict, count_question = count_question, question = question, count_answer = count_answer,answer = answer,count_comment = count_comment, comment = comment, user_id = user_id)
+
 if __name__ == '__main__':
     app.secret_key = 'webex'  
     app.run(
         debug=True,  
-        port=5000)
+        port=5001)

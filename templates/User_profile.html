@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" href="/static/register.css"> -->
+
+</head>
+<title>User Profile</title>
+
+<body>
+
+    {% for dict in users_datadict %} {%if user_id == dict.user_id%}
+
+    <h2>{{ dict.user_name }} Profile</h2>
+    {%endif%} {% endfor %}
+
+
+    <p>Activity:</p>
+
+
+    <p>question:</p>
+
+    <p>liczba pytan {{count_question}}</p>
+
+
+
+    {% for dict in question %}
+    <div class="block">
+        <div class="flexbox">
+            <p>title:</p>
+            <div>{{dict.title}}</div>
+
+        </div>
+        <p>message:</p>
+        <div id="message">{{dict.message}}</div>
+        <div class="flexbox2">
+            <div>Time: {{dict.submission_time}}</div>
+            <div>
+                <form action='/question/{{ dict.id }}' method="GET">
+                    <a href='/question/{{ dict.id }}' name="question_link">Visit</a>
+                </form>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+
+
+    <p>answer:</p>
+
+    <p>liczba odpowiedzi {{count_answer}}</p>
+
+    {% for dict in answer %}
+    <div class="block">
+        <div class="flexbox">
+            <div>{{dict.title}}</div>
+        </div>
+        <div id="message">{{dict.message}}</div>
+        <div class="flexbox2">
+            <div>Time: {{dict.submission_time}}</div>
+            <div>
+                <form action='/question/{{ dict.id }}' method="GET">
+                    <a href='/question/{{ dict.id }}' name="question_link">Visit</a>
+                </form>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+
+    <p>comment:</p>
+    <p>liczba komentarzy {{count_comment}}</p>
+
+    {% for dict in comment %}
+    <div class="block">
+        <div class="flexbox">
+            <div>{{dict.title}}</div>
+        </div>
+        <div id="message">{{dict.message}}</div>
+        <div class="flexbox2">
+            <div>Time: {{dict.submission_time}}</div>
+            <div>
+                <form action='/question/{{ dict.id }}' method="GET">
+                    <a href='/question/{{ dict.id }}' name="question_link">Visit</a>
+                </form>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>

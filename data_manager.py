@@ -1,4 +1,5 @@
 import csv
+import user
 from collections import OrderedDict
 from psycopg2 import sql, Binary
 import database_common
@@ -27,7 +28,7 @@ def insert_dict_into_database(cursor, table, list_to_add):
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
-                        VALUES (%s, %s, %s, %s, %s, %s, %s);
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                     )
@@ -35,7 +36,7 @@ def insert_dict_into_database(cursor, table, list_to_add):
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
-                        VALUES (%s, %s, %s, %s, %s, %s);
+                        VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                    )
@@ -43,7 +44,7 @@ def insert_dict_into_database(cursor, table, list_to_add):
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
-                        VALUES (%s, %s, %s, %s, %s, %s);
+                        VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                    )
@@ -224,3 +225,76 @@ def check_if_user_in_database(cursor, user_input):
                    )
     user = cursor.fetchall()
     return user
+
+
+
+@database_common.connection_handler
+def user_questions(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "question"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def user_answers(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "answer"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def user_comments(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "comment"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+
+
+@database_common.connection_handler
+def count_user_questions(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "question"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def count_user_answers(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "answer"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def count_user_comments(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "comment"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+
+
