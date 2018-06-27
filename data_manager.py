@@ -2,13 +2,14 @@ import csv
 from collections import OrderedDict
 from psycopg2 import sql, Binary
 import database_common
+import user
 
 
 question_dict = {"id": "0", "submission_time": "0", "view_number": "0",
                  "vote_number": "0", "title": "", "message": "", "image": "", "user_id": 0}
 answer_dict = {"id": "0", "submission_time": "0", "vote_number": "0", "question_id": "0", "message": "", "image": "", "user_id": 0}
 comment_dict = {"id": "0", "question_id": None, "answer_id": None, "message": "", "submission_time": "0", "edited_number":"0", "user_id": 0}
-user_dict = {"id": 0, "user_name": "", "user_password": "", "registration_time": ""}
+user_dict = {"id": 0, "user_name": "", "user_password": "", "registration_time": "", "user_reputation": 0}
 
 @database_common.connection_handler
 def get_list_of_dicts_from_database(cursor, table):
@@ -23,7 +24,6 @@ def get_list_of_dicts_from_database(cursor, table):
 
 @database_common.connection_handler
 def insert_dict_into_database(cursor, table, list_to_add):
-    print(list_to_add)
     if table == "question":
         cursor.execute(
             sql.SQL("""
@@ -53,7 +53,7 @@ def insert_dict_into_database(cursor, table, list_to_add):
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
-                        VALUES (%s, %s, %s, %s);
+                        VALUES (%s, %s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                    )
@@ -249,5 +249,42 @@ def check_if_password_correct(cursor, user_input):
                    )
     password = cursor.fetchall()
     return password
+
+
+@database_common.connection_handler
+def check_user_reputation_and_id_in_question(cursor, question_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT user_reputation, "user".user_id FROM "user"
+                    JOIN question ON "user".user_id = question.user_id
+                    WHERE question.id = %(question_id)s;
+                """), {'question_id' : question_id}
+                   )
+    reputation_and_user_id = cursor.fetchall()
+    return reputation_and_user_id
+
+
+@database_common.connection_handler
+def check_user_reputation_and_id_in_answer(cursor, answer_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT user_reputation, "user".user_id FROM "user"
+                    JOIN answer ON "user".user_id = answer.user_id
+                    WHERE answer.id = %(answer_id)s;
+                """), {'answer_id' : answer_id}
+                   )
+    reputation_and_user_id = cursor.fetchall()
+    return reputation_and_user_id
+
+
+@database_common.connection_handler
+def change_user_reputation(cursor, user_id, reputation_value):
+    cursor.execute(
+        sql.SQL("""
+                    UPDATE "user"
+                    SET user_reputation = %(reputation_value)s
+                    WHERE user_id = %(user_id)s;
+                """), {'user_id' : user_id, 'reputation_value' : reputation_value}
+                   )
 
 

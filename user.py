@@ -28,9 +28,12 @@ def generate_new_id_from_user_table(cursor,table):
 def check_if_user_exist():
     user_input = request.form.get('user_name')
     user_in_database = data_manager.check_if_user_in_database_return_name(user_input)
-    user_in_database = user_in_database[0]['user_name']
-    if user_input == user_in_database:
-        return True
+    if user_in_database != []:
+        user_in_database = user_in_database[0]['user_name']
+        if user_input == user_in_database:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -41,8 +44,36 @@ def add_new_user():
     data_manager.user_dict['user_name'] = request.form.get('user_name')
     data_manager.user_dict['user_password'] = request.form.get('user_password')
     data_manager.user_dict['registration_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data_manager.user_dict['user_reputation'] = 0
     list_to_add = [item for item in data_manager.user_dict.values()]
     data_manager.insert_dict_into_database(server.user_table, list_to_add)
+
+
+def change_user_reputation_in_question(item_id, change_by_value):
+    user_reputation_and_id = data_manager.check_user_reputation_and_id_in_question(item_id)
+    user_reputation_and_id = user_reputation_and_id[0]
+    user_reputation = user_reputation_and_id['user_reputation']
+    user_reputation = user_reputation + change_by_value
+    user_id = user_reputation_and_id['user_id']
+    data_manager.change_user_reputation(user_id, user_reputation)
+    print(user_id)
+    print(user_reputation)
+
+
+def change_user_reputation_in_answer(item_id, change_by_value):
+    user_reputation_and_id = data_manager.check_user_reputation_and_id_in_answer(item_id)
+    user_reputation_and_id = user_reputation_and_id[0]
+    user_reputation = user_reputation_and_id['user_reputation']
+    user_reputation = user_reputation + change_by_value
+    user_id = user_reputation_and_id['user_id']
+    data_manager.change_user_reputation(user_id, user_reputation)
+    print(user_id)
+    print(user_reputation)
+
+    # if user_reputation != []:
+    #     user_reputation = user_reputation[0]['user_reputation']
+    #     user_reputation = user_reputation + change_by_value
+    #     print(user_reputation)
 
 
 def change_current_user():
@@ -57,6 +88,8 @@ def change_current_user():
     if user_in_database != [] and check_if_password_correct == user_input_password:
         global current_user
         current_user = user_in_database[0]['user_id']
+        # change_user_reputation()
+
         return user_in_database, check_if_password_correct
     else:
         check_if_password_correct = "wrong"

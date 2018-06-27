@@ -13,16 +13,19 @@ import database_common
 
 @database_common.connection_handler
 def generate_new_id_from_file(cursor,table):
-    cursor.execute(
-        sql.SQL("""
-                    SELECT coalesce(id,-1) as id FROM {}
-                      order by id DESC
-                      limit 1;
-                """).format(sql.Identifier(table))
-                   )
+    try:
+        cursor.execute(
+            sql.SQL("""
+                        SELECT coalesce(id,-1) as id FROM {}
+                        order by id DESC
+                        limit 1;
+                    """).format(sql.Identifier(table))
+                    )
 
-    id_of_the_last_question = cursor.fetchall()
-    return id_of_the_last_question[0]['id'] +1
+        id_of_the_last_question = cursor.fetchall()
+        return id_of_the_last_question[0]['id'] +1
+    except IndexError:
+        return 1
 
 
 @database_common.connection_handler
@@ -96,22 +99,50 @@ def sort_by_time(dict_list):
 
 def change_vote_value(file):
     list_of_dicts = data_manager.get_list_of_dicts_from_database(file)
-    if request.form.get('UP') != None:
-        id_of_item_voted_up = int(request.form.get('UP'))
-        for row in list_of_dicts:
-            if row['id'] == id_of_item_voted_up:
-                row['vote_number'] = (int(row['vote_number']) + 1)
-                updated_vote_number = row['vote_number']
-                arg_list = [updated_vote_number, id_of_item_voted_up]
-                data_manager.update_votes_in_database(file, arg_list)
-    if request.form.get('DOWN') != None:
-        id_of_item_voted_down = int(request.form.get('DOWN'))
-        for row in list_of_dicts:
-            if row['id'] == id_of_item_voted_down:
-                row['vote_number'] = (int(row['vote_number']) - 1)
-                updated_vote_number = row['vote_number']
-                arg_list = [updated_vote_number, id_of_item_voted_down]
-                data_manager.update_votes_in_database(file, arg_list)
+    if file == "question":
+        if request.form.get('UP') != None:
+            id_of_item_voted_up = int(request.form.get('UP'))
+            user.change_user_reputation_in_question(id_of_item_voted_up, 5)
+
+            for row in list_of_dicts:
+                if row['id'] == id_of_item_voted_up:
+                    row['vote_number'] = (int(row['vote_number']) + 1)
+                    updated_vote_number = row['vote_number']
+                    arg_list = [updated_vote_number, id_of_item_voted_up]
+                    data_manager.update_votes_in_database(file, arg_list)
+        if request.form.get('DOWN') != None:
+            id_of_item_voted_down = int(request.form.get('DOWN'))
+            user.change_user_reputation_in_question(id_of_item_voted_down, -2)
+
+            for row in list_of_dicts:
+                if row['id'] == id_of_item_voted_down:
+                    row['vote_number'] = (int(row['vote_number']) - 1)
+                    updated_vote_number = row['vote_number']
+                    arg_list = [updated_vote_number, id_of_item_voted_down]
+                    data_manager.update_votes_in_database(file, arg_list)
+    elif file == "answer":
+        if request.form.get('UP') != None:
+            id_of_item_voted_up = int(request.form.get('UP'))
+            user.change_user_reputation_in_answer(id_of_item_voted_up, 10)
+
+
+            for row in list_of_dicts:
+                if row['id'] == id_of_item_voted_up:
+                    row['vote_number'] = (int(row['vote_number']) + 1)
+                    updated_vote_number = row['vote_number']
+                    arg_list = [updated_vote_number, id_of_item_voted_up]
+                    data_manager.update_votes_in_database(file, arg_list)
+        if request.form.get('DOWN') != None:
+            id_of_item_voted_down = int(request.form.get('DOWN'))
+            user.change_user_reputation_in_answer(id_of_item_voted_up, -2)
+
+
+            for row in list_of_dicts:
+                if row['id'] == id_of_item_voted_down:
+                    row['vote_number'] = (int(row['vote_number']) - 1)
+                    updated_vote_number = row['vote_number']
+                    arg_list = [updated_vote_number, id_of_item_voted_down]
+                    data_manager.update_votes_in_database(file, arg_list)
 
 
 def get_data_from_certain_row(field_name, question_id):
