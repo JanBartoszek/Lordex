@@ -239,6 +239,14 @@ def log_out():
     user.log_out()
     return redirect('/')
 
+
+@app.route("/answer/<answer_id>/toggle_accepted")
+def toggle_accepted(answer_id):
+    data_manager.toggle_accepted(answer_id)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect('/question/{}'.format(question_id))
+
+
 if __name__ == '__main__':
     app.secret_key = 'webex'  
     app.run(

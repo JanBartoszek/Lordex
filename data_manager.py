@@ -251,3 +251,23 @@ def check_if_password_correct(cursor, user_input):
     return password
 
 
+@database_common.connection_handler
+def toggle_accepted(cursor, answer_id):
+    cursor.execute("""
+                    UPDATE answer
+                    SET accepted = NOT accepted
+                    WHERE id = (%s);
+                   """, (answer_id,))
+
+
+@database_common.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT question.id 
+                    FROM question
+                    JOIN answer on question.id = question_id
+                    WHERE answer.id = (%s);
+                   """, (answer_id,))
+
+    list_of_dicts = cursor.fetchall()
+    return list_of_dicts[0]["id"]

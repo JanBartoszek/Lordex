@@ -13,16 +13,19 @@ import database_common
 
 @database_common.connection_handler
 def generate_new_id_from_file(cursor,table):
-    cursor.execute(
-        sql.SQL("""
-                    SELECT coalesce(id,-1) as id FROM {}
-                      order by id DESC
-                      limit 1;
-                """).format(sql.Identifier(table))
-                   )
+    try:
+        cursor.execute(
+            sql.SQL("""
+                        SELECT coalesce(id,-1) as id FROM {}
+                        order by id DESC
+                        limit 1;
+                    """).format(sql.Identifier(table))
+                    )
 
-    id_of_the_last_question = cursor.fetchall()
-    return id_of_the_last_question[0]['id'] +1
+        id_of_the_last_question = cursor.fetchall()
+        return id_of_the_last_question[0]['id'] +1
+    except IndexError:
+        return 1
 
 
 @database_common.connection_handler
