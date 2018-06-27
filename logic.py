@@ -5,6 +5,7 @@ from collections import OrderedDict
 
 from flask import Flask, render_template, redirect, request
 import time
+import user
 
 from collections import OrderedDict
 from psycopg2 import sql

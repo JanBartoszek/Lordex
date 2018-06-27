@@ -23,11 +23,12 @@ def get_list_of_dicts_from_database(cursor, table):
 
 @database_common.connection_handler
 def insert_dict_into_database(cursor, table, list_to_add):
+    print(list_to_add)
     if table == "question":
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
-                        VALUES (%s, %s, %s, %s, %s, %s, %s);
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                     )
@@ -35,7 +36,7 @@ def insert_dict_into_database(cursor, table, list_to_add):
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
-                        VALUES (%s, %s, %s, %s, %s, %s);
+                        VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                    )
@@ -43,7 +44,7 @@ def insert_dict_into_database(cursor, table, list_to_add):
         cursor.execute(
             sql.SQL("""
                         INSERT INTO {}
-                        VALUES (%s, %s, %s, %s, %s, %s);
+                        VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """).format(sql.Identifier(table)),
                         list_to_add
                    )
