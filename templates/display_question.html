@@ -48,12 +48,13 @@
 
 
         
+        
 
         <div class="answers">          
             <p><h3>Answers:</h3></p>
             <p></p>                       
                 {% for dict in dict_table %}
-                    {% if dict.question_id == question_id %}  
+                    {% if dict.question_id == question_id %} 
                     <div id="answer">
                         {{dict.message}}
                         {% if dict.accepted == True %}
@@ -65,9 +66,9 @@
                         
                                 <button type="submit" name="UP" value="{{dict.id}}">UP</button>
                                 <button type="submit" name="DOWN" value="{{dict.id}}">DOWN</button>
-                                
+                                {{user_in_database}}{{user_id}}
                                 {% if user_in_database == user_id %}
-                                    <a href='/answer/{{ dict.id }}/toggle_accepted'>Toggle if accepted!</a>
+                                    <a href='/answer/{{ dict.id }}/toggle_accepted'>Toggle  accepted!</a>
                                 {% endif %}
                                 
                                 <a href='/answer/{{ dict.id }}/delete'>Delete!</a>

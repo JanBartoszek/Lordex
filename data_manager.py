@@ -88,9 +88,9 @@ def delete_dict_from_database(cursor, table, item_id):
     cursor.execute(
         sql.SQL("""
                     DELETE FROM {}
-                    WHERE id = %s;
+                    WHERE id = %(item_id)s;
                 """).format(sql.Identifier(table)),
-                    str(item_id)
+                    {"item_id": str(item_id)}
                    )
 
 
@@ -201,8 +201,8 @@ def delete_tags_from_question(cursor, question_id):
     cursor.execute(
         sql.SQL("""
                     DELETE FROM question_tag
-                    WHERE question_id = %s;
-                """), str(question_id)
+                    WHERE question_id = %(question_id)s;
+                """), {"question_id": str(question_id)}
                    )
 
 
@@ -211,8 +211,8 @@ def delete_comments_from_question(cursor, question_id):
     cursor.execute(
         sql.SQL("""
                     DELETE FROM comment
-                    WHERE question_id = %s;
-                """), str(question_id)
+                    WHERE question_id = %(question_id)s;
+                """), {"question_id": str(question_id)}
                    )
 
 @database_common.connection_handler

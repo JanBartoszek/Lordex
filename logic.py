@@ -157,8 +157,8 @@ def delete_question_and_its_answers(cursor,question_id):
         sql.SQL("""
                     select answer.id 
                     from answer join question on (answer.question_id=question.id)
-                    where question.id = %s;
-                """), str(question_id)
+                    where question.id = %(question_id)s;
+                """), {"question_id": str(question_id)}
     )
     list_of_dict_with_answer_id_to_delete = cursor.fetchall()
     for dict_with_answer_id in list_of_dict_with_answer_id_to_delete:
