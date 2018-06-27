@@ -204,8 +204,7 @@ def register():
 
 @app.route("/users_list")
 def users_list():
-    table = "user"
-    users_datadict = data_manager.get_list_of_dicts_from_database(table)
+    users_datadict = data_manager.get_list_of_dicts_from_database(user_table)
     return render_template('users_list.html', users_datadict=users_datadict)
 
 
