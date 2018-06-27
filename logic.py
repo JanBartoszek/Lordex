@@ -51,6 +51,7 @@ def add_question():
     data_manager.question_dict['title'] = request.form.get('question')
     data_manager.question_dict['message'] = request.form.get('message')
     data_manager.question_dict['image'] = request.form.get('image')
+    data_manager.question_dict['user_id'] = user.current_user
     # dictio = data_manager.question_dict
     # sorted_dict = OrderedDict([(el, data_manager.question_dict[el]) for el in ordination])
     list_to_add = [item for item in data_manager.question_dict.values()]
@@ -74,6 +75,7 @@ def add_comment(id_of_question_or_answer, table_type):
         data_manager.comment_dict["question_id"] = None
     data_manager.comment_dict["message"] = request.form.get('comment')
     data_manager.comment_dict["submission_time"] = datetime.now()
+    data_manager.comment_dict['user_id'] = user.current_user
     list_to_add = [item for item in data_manager.comment_dict.values()]
     data_manager.insert_dict_into_database(server.comment_table, list_to_add)
 
@@ -82,6 +84,7 @@ def add_answer(question_id):
     data_manager.answer_dict['submission_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     data_manager.answer_dict['question_id'] = question_id
     data_manager.answer_dict['message'] = request.form.get('answer')
+    data_manager.answer_dict['user_id'] = user.current_user
     list_to_add = [item for item in data_manager.answer_dict.values()]
     data_manager.insert_dict_into_database(server.answer_table, list_to_add)
 

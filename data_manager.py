@@ -5,9 +5,9 @@ import database_common
 
 
 question_dict = {"id": "0", "submission_time": "0", "view_number": "0",
-                 "vote_number": "0", "title": "", "message": "", "image": ""}
-answer_dict = {"id": "0", "submission_time": "0", "vote_number": "0", "question_id": "0", "message": "", "image": ""}
-comment_dict = {"id": "0", "question_id": None, "answer_id": None, "message": "", "submission_time": "0", "edited_number":"0"}
+                 "vote_number": "0", "title": "", "message": "", "image": "", "user_id": 0}
+answer_dict = {"id": "0", "submission_time": "0", "vote_number": "0", "question_id": "0", "message": "", "image": "", "user_id": 0}
+comment_dict = {"id": "0", "question_id": None, "answer_id": None, "message": "", "submission_time": "0", "edited_number":"0", "user_id": 0}
 user_dict = {"id": 0, "user_name": "", "user_password": "", "registration_time": ""}
 
 @database_common.connection_handler
