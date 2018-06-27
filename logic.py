@@ -135,7 +135,7 @@ def change_vote_value(file):
                     data_manager.update_votes_in_database(file, arg_list)
         if request.form.get('DOWN') != None:
             id_of_item_voted_down = int(request.form.get('DOWN'))
-            user.change_user_reputation_in_answer(id_of_item_voted_up, -2)
+            user.change_user_reputation_in_answer(id_of_item_voted_down, -2)
 
 
             for row in list_of_dicts:
