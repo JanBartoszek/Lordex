@@ -193,6 +193,22 @@ def register_new_user():
     user.add_new_user()
     return redirect('/')
 
+@app.route("/log_in")
+def log_in():
+    return render_template('log_in.html')
+
+@app.route("/log_in", methods = ["POST"])
+def change_current_user():
+    user_in_database = user.change_current_user()
+    if user_in_database != []:
+        return redirect('/')
+    else:
+        return render_template('log_in.html', user_in_database = user_in_database)
+
+@app.route("/log_out")
+def log_out():
+    user.log_out()
+    return redirect('/')
 
 if __name__ == '__main__':
     app.secret_key = 'webex'  

@@ -25,22 +25,6 @@ def generate_new_id_from_file(cursor,table):
 
 
 @database_common.connection_handler
-def generate_new_id_from_user_table(cursor,table):
-    try:
-        cursor.execute(
-            sql.SQL("""
-                        SELECT coalesce(user_id,-1) as user_id FROM {}
-                        order by user_id DESC
-                        limit 1;
-                    """).format(sql.Identifier(table))
-                    )
-
-        id_of_the_last_question = cursor.fetchall()
-        return id_of_the_last_question[0]['user_id'] + 1
-    except IndexError:
-        return 1
-
-@database_common.connection_handler
 def get_question_id_from_answer(cursor,answer_id):
     answer_id=str(answer_id)
     cursor.execute(

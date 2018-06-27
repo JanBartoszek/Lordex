@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/register.css">
+
+</head>
+
+<body>
+
+    <h2> log in </h2>
+
+    <form action="/log_in" class="whole_containter" method="POST">
+        <div class="imgcontainer">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Git-logo.svg/1200px-Git-logo.svg.png" alt="Avatar" class="avatar">
+        </div>
+        <div class="container">
+            <label for="user_name">
+                {% if user_in_database == [] %}
+                    <script type="text/javascript">
+                    alert("WRONG USER")
+                    </script>
+                {% endif%}
+
+
+                <b>Username</b>
+            </label>
+            <input type="text" placeholder="Enter Username" name="user_name" required>
+
+            <label for="user_password">
+                <b>Password</b>
+            </label>
+            <input type="password" placeholder="Enter Password" name="user_password" required>
+
+            <button type="submit">Log in</button>
+            <label>
+            </label>
+        </div>
+
+        <a href="/"><button type="button" class="cancelbtn">Cancel</button></a>
+        
+    </form>
+</body>
+
+</html>

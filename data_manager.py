@@ -213,3 +213,14 @@ def delete_comments_from_question(cursor, question_id):
                     WHERE question_id = %s;
                 """), str(question_id)
                    )
+
+@database_common.connection_handler
+def check_if_user_in_database(cursor, user_input):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT user_id FROM "user"
+                    WHERE user_name = %(user_input)s;
+                """), {'user_input': user_input}
+                   )
+    user = cursor.fetchall()
+    return user
