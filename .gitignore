@@ -100,4 +100,9 @@ ENV/
 # mypy
 .mypy_cache/
 
+<<<<<<< HEAD
+=======
+.gitignore
+.history/
+>>>>>>> 91e0b75c5d8a336e59dba31c1a5718bb5837cfd7
 run.sh

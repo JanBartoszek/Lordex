@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"> 
+        <link rel="stylesheet" type="text/css" href="/static/users_list.css">
+        <title>AskMate--users</title>
+    </head>
+    <body>
+        <h1>Users list:</h1>
+            
+        
+            
+                {% for dict in users_datadict %}
+                    <a href='/'>{{ dict.user_name }}</a><br>
+                {% endfor %}
+            
+        
+        
+        <p><a href='/'>Back to main!</a></p>
+    </body>
+</html> 
