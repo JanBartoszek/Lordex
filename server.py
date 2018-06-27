@@ -48,13 +48,13 @@ def delete_comment(comment_id):
 
 @app.route('/new_question')
 def ask_question():
-    print(user.current_user)
+ 
     return render_template('new_question.html')
 
 
 @app.route('/new_question', methods=["POST"])
 def add_question():
-    print(user.current_user)
+ 
     logic.add_question()
     return redirect('/')
 
@@ -111,7 +111,6 @@ def post_answer():
 @app.route('/')
 def get_five_questions():
     questions = data_manager.get_five_questions()
-    print(user.current_user)
     return render_template('list_latest_five_questions.html', dict_sorted_by_time=questions)
 
 
