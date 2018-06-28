@@ -249,6 +249,11 @@ def log_out():
 @app.route("/answer/<answer_id>/toggle_accepted")
 def toggle_accepted(answer_id):
     data_manager.toggle_accepted(answer_id)
+    value = user.check_value_of_accepted_button(answer_id)
+    if value == True:
+        user.change_user_reputation_in_answer(answer_id, 15)
+    elif value == False:
+        user.change_user_reputation_in_answer(answer_id, -15)
     question_id = data_manager.get_question_id_by_answer_id(answer_id)
     return redirect('/question/{}'.format(question_id))
 

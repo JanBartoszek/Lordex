@@ -90,3 +90,9 @@ def change_current_user():
 def log_out():
     global current_user
     current_user = None
+
+
+def check_value_of_accepted_button(answer_id):
+    value = data_manager.toggle_check_value(answer_id)
+    value = value[0]['accepted']
+    return value

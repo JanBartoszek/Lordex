@@ -6,42 +6,80 @@
     <link rel="stylesheet" type="text/css" href="/static/style_list_latest_five_questions.css">
 
 
-    <title>AskMate Homepage</title>
+    <title>AskGit</title>
 </head>
 
 <body>
     <div class="user_in_session">
         {{user_name_to_display}}
     </div>
-    <div class="top_buttons">
-        
-        {% if user_in_database == None %}
-        
-        <a id="myLink" href='/new_question' onclick="unlogged_prohibition();return false;">Click to ask a question</a><br>
-
-        <script type="text/javascript">
-            function unlogged_prohibition() {
-                alert("You have to log in to do this");
-            }
-        </script> {% else %}
-
-        <a href='/new_question'>Click to ask a question</a>
-        <br> {% endif%}
-
-        <a href='/list_question'>Go to all questions</a>
-        <br>
-
-        <a href='/users_list'>Users list</a>
-        <br>
-    </div>
 
 
 
-    <h1>AskMate Homepage</h1>
+
+    <!-- <h1>AskMate Homepage</h1> -->
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/style_list_latest_five_questions.css">
+
+
+    <title>AskGit</title>
+</head>
 
 
 
-    <div class="user_container">
+<body>
+
+    <div class="page_content">
+
+
+    <nav class="user_container">
+            <form action="/log_in" id="form1">
+                <button type="submit" class="user">Log in</button>
+            </form>
+            <form action="/register" id="form2">
+                <button type="submit" class="user">Register</button>
+            </form>
+            <form action="/log_out" id="form3">
+                <button type="submit" class="user">Log out</button>
+            </form>
+
+
+            <div class="dropdown">
+                <button class="dropbtn">Menu</button>
+                <div class="top_buttons">
+
+
+
+
+                    {% if user_in_database == None %}
+    
+                    <a id="myLink" href='/new_question' onclick="unlogged_prohibition();return false;">Click to ask a question</a><br>
+            
+                    <script type="text/javascript">
+                        function unlogged_prohibition() {
+                            alert("You have to log in to do this");
+                        }
+                    </script> {% else %}
+            
+                    <a href='/new_question'>Click to ask a question</a>
+                    {% endif%}
+
+
+
+
+
+                    <!-- <a href='/new_question'>Click to ask a question</a> -->
+                    <a href='/list_question'>Go to all questions</a>
+                    <a href='/users_list'>Users list</a>
+                </div>
+            </div>
+    </nav>
+
+
+    <!-- <div class="user_container">
         <form action="/log_in">
             <button type="submit" class="user">Log in</button>
         </form>
@@ -51,9 +89,9 @@
         <form action="/log_out">
             <button type="submit" class="user">Log out</button>
         </form>
-    </div>
+    </div> -->
 
-    <div class="go">
+    <!-- <div class="go">
         <form action="/search" method="POST">
             <label for="search_input">Search for:</label>
             <textarea id="search_input" name="search_input" rows="1" cols="80" minlength="3" maxlength="50" placeholder="Type here..."></textarea>
@@ -61,8 +99,8 @@
                 <button type="submit" value="Submit">Go</button>
             </p>
         </form>
-    </div>
-
+    </div> -->
+<!-- 
     {% for dict in dict_sorted_by_time %}
     <div class="block">
         <div class="flexbox">
@@ -93,8 +131,63 @@
         <a href='/question/{{ dict.id }}/delete'>Delete!</a>
 
         {% endfor %}
-    </div>
+    </div> -->
 
+    <!-- <div class="dropdown">
+        <button class="dropbtn">Dropdown</button>
+        <div class="top_buttons">
+            <a href='/new_question'>Click to ask a question</a>
+            <a href='/list_question'>Go to all questions</a>
+            <a href='/users_list'>Users list</a>
+        </div>
+    </div> -->
+
+        <h1>AskGit</h1>
+
+
+
+
+
+        <div class="go">
+            <form action="/search" method="POST">
+                <label for="search_input">Search for:</label>
+                <textarea id="search_input" name="search_input" rows="1" cols="50" minlength="3" maxlength="50" placeholder="Type here..."></textarea>
+                    <button type="submit" value="Submit" id="search_button"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+
+        {% for dict in dict_sorted_by_time %}
+        <div class="block">
+            <div class="flexbox">
+                <div>{{dict.title}}</div>
+                <div>
+                    {% if dict.image == '' or dict.image == None or dict.image == 'images/image1.png' %}
+                    <img src='https://avatars1.githubusercontent.com/u/18133?s=400&v=4' width="30" height="30" alt='https://avatars1.githubusercontent.com/u/18133?s=400&v=4'> {% else %}
+                    <img src={{dict.image}} alt=h ttps://avatars1.githubusercontent.com/u/18133?s=400&v=4 width="30" height="30"> {% endif %}
+                </div>
+            </div>
+            <div id="message">{{dict.message}}</div>
+            <div class="flexbox2">
+                <div>Time: {{dict.submission_time}}</div>
+                <div>Views: {{dict.view_number}}</div>
+                <div>Votes: {{dict.vote_number}}</div>
+                <div>
+                    <form action='/question/{{ dict.id }}' method="GET">
+                        <a href='/question/{{ dict.id }}' name="question_link">Visit</a>
+                    </form>
+                </div>
+            </div>
+
+            <form action='/' method="POST">
+                <button class="vote_buttons" type="submit" name="UP" value="{{dict.id}}"><i class="fa fa-thumbs-up"></i></button>
+                <button class="vote_buttons" type="submit" name="DOWN" value="{{dict.id}}"><i class="fa fa-thumbs-down"></i></button>
+            </form>
+
+            <a href='/question/{{ dict.id }}/delete'>Delete!</a>
+
+            {% endfor %}
+        </div>
+    </div>
 </body>
 
 </html>

@@ -326,6 +326,17 @@ def toggle_accepted(cursor, answer_id):
 
 
 @database_common.connection_handler
+def toggle_check_value(cursor, answer_id):
+    cursor.execute("""
+                    SELECT accepted FROM answer
+                    WHERE id = (%s);
+                   """, (answer_id,)) 
+    toggle_value = cursor.fetchall()
+    print(toggle_value)
+    return toggle_value
+
+
+@database_common.connection_handler
 def get_question_id_by_answer_id(cursor, answer_id):
     cursor.execute("""
                     SELECT question.id 
@@ -336,6 +347,8 @@ def get_question_id_by_answer_id(cursor, answer_id):
 
     list_of_dicts = cursor.fetchall()
     return list_of_dicts[0]["id"]
+
+
 @database_common.connection_handler
 def user_answers(cursor, user_id):
     cursor.execute(
@@ -346,6 +359,7 @@ def user_answers(cursor, user_id):
                    )
     user = cursor.fetchall()
     return user
+
 
 @database_common.connection_handler
 def user_comments(cursor, user_id):
