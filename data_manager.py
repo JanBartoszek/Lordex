@@ -238,6 +238,22 @@ def check_if_user_in_database_return_name(cursor, user_input):
                 )
     user = cursor.fetchall()
     return user
+
+
+@database_common.connection_handler
+def get_user_name_by_user_id(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT user_name FROM "user"
+                    WHERE user_id = %(user_id)s;
+                """), {'user_id': user_id}
+                )
+    user = cursor.fetchall()
+    print(user)
+    if user == []:
+        return "unlogged"
+    else:
+        return user[0]['user_name']
     
 @database_common.connection_handler
 def user_questions(cursor, user_id):

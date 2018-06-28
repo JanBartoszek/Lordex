@@ -111,7 +111,9 @@ def post_answer():
 def get_five_questions():
     questions = data_manager.get_five_questions()
     current_user = user.current_user
-    return render_template('list_latest_five_questions.html', dict_sorted_by_time=questions, user_in_database=current_user)
+    user_name_to_display = data_manager.get_user_name_by_user_id(current_user)
+    return render_template('list_latest_five_questions.html', dict_sorted_by_time=questions, 
+                           user_in_database=current_user, user_name_to_display=user_name_to_display)
 
 
 @app.route('/list_question')       
