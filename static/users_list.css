@@ -12,5 +12,7 @@ body{
 h1{
     font-size: 72px;
     margin: 72px 72px 36px 72px;
+    text-shadow: 2px 2px 8px #FF0000;
+
 
 }

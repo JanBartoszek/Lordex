@@ -65,14 +65,6 @@ def change_user_reputation_in_answer(item_id, change_by_value):
     user_reputation = user_reputation + change_by_value
     user_id = user_reputation_and_id['user_id']
     data_manager.change_user_reputation(user_id, user_reputation)
-<<<<<<< HEAD
-=======
-
-    # if user_reputation != []:
-    #     user_reputation = user_reputation[0]['user_reputation']
-    #     user_reputation = user_reputation + change_by_value
-    #     print(user_reputation)
->>>>>>> 94cd368d1fb8dc765b79fcc63adde613ee625b04
 
 
 def change_current_user():
@@ -98,3 +90,9 @@ def change_current_user():
 def log_out():
     global current_user
     current_user = None
+
+
+def check_value_of_accepted_button(answer_id):
+    value = data_manager.toggle_check_value(answer_id)
+    value = value[0]['accepted']
+    return value
