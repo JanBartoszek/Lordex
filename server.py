@@ -12,6 +12,7 @@ comment_table = "comment"
 user_table = "user"
 
 
+
 app = Flask(__name__)
 
 # comment routings
@@ -69,7 +70,7 @@ def display(question_id):
     title = logic.get_data_from_certain_row("title", question_id)
     message = logic.get_data_from_certain_row("message", question_id)
     user_id = logic.get_data_from_certain_row("user_id", question_id)
-    user_in_database = user.current_user
+    current_user = user.current_user
     row = logic.display(question_id)
     dict_table = data_manager.get_list_of_dicts_from_database(answer_table)
     tags = data_manager.get_tags_by_question_id(question_id)
@@ -77,7 +78,7 @@ def display(question_id):
     comment_dict_sorted_by_time = logic.sort_by_time(dict_with_comments)
     return render_template('display_question.html', row=row, question_id=question_id,
                            dict_table=dict_table, message=message, title=title, tags=tags, 
-                           comment_dict_sorted_by_time=comment_dict_sorted_by_time, user_in_database=user_in_database, user_id=user_id)
+                           comment_dict_sorted_by_time=comment_dict_sorted_by_time, user_in_database=current_user, user_id=user_id)
 
 
 # new answer routings
@@ -109,7 +110,10 @@ def post_answer():
 @app.route('/')
 def get_five_questions():
     questions = data_manager.get_five_questions()
-    return render_template('list_latest_five_questions.html', dict_sorted_by_time=questions)
+    current_user = user.current_user
+    user_name_to_display = data_manager.get_user_name_by_user_id(current_user)
+    return render_template('list_latest_five_questions.html', dict_sorted_by_time=questions, 
+                           user_in_database=current_user, user_name_to_display=user_name_to_display)
 
 
 @app.route('/list_question')       
@@ -117,7 +121,8 @@ def list_question():
     # names=data_manager.get_fieldnames_from_file("sample_data/question.csv")
     dict_from_csv = data_manager.get_list_of_dicts_from_database(question_table)
     dict_sorted_by_time = logic.sort_by_time(dict_from_csv)
-    return render_template('list_questions.html', dict_sorted_by_time = dict_sorted_by_time)
+    current_user = user.current_user
+    return render_template('list_questions.html', dict_sorted_by_time = dict_sorted_by_time, user_in_database=current_user)
 
 @app.route('/', methods=["POST"])
 @app.route('/list_question', methods=["POST"])       
@@ -219,7 +224,7 @@ def register_new_user():
         user.add_new_user()
         return redirect('/')
     else:
-        return render_template('register.html', user_in_database = user_in_database)
+        return render_template('register.html', user_in_database=user_in_database)
 
 
 
@@ -233,7 +238,7 @@ def change_current_user():
     if user_in_database != [] and check_if_password_correct != "wrong":
         return redirect('/')
     else:
-        return render_template('log_in.html', user_in_database = user_in_database, check_if_password_correct = check_if_password_correct)
+        return render_template('log_in.html', user_in_database=user_in_database, check_if_password_correct=check_if_password_correct)
 
 @app.route("/log_out")
 def log_out():

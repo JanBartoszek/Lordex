@@ -51,7 +51,20 @@
                         {% endfor %}
                     </div>
         <p></p>
-        <a href='/new_question'>    Click to ask a question</a><br>
+        {% if user_in_database == None %}
+        
+        <a id="myLink" href='/new_question' onclick="unlogged_prohibition();return false;">Click to ask a question</a><br>
+
+        <script type="text/javascript">
+            function unlogged_prohibition() {
+                alert("You have to log in to do this");
+            }
+        </script> {% else %}
+
+        <a href='/new_question'>Click to ask a question</a>
+        <br> {% endif%}
+
+
         <p><a href='/'>Back to main!</a></p>
     </body>
 </html> 
