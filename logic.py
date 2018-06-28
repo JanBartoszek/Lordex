@@ -1,5 +1,6 @@
 import server
 import data_manager
+import user
 from datetime import datetime
 from collections import OrderedDict
 
@@ -134,7 +135,7 @@ def change_vote_value(file):
                     data_manager.update_votes_in_database(file, arg_list)
         if request.form.get('DOWN') != None:
             id_of_item_voted_down = int(request.form.get('DOWN'))
-            user.change_user_reputation_in_answer(id_of_item_voted_up, -2)
+            user.change_user_reputation_in_answer(id_of_item_voted_down, -2)
 
 
             for row in list_of_dicts:
@@ -157,8 +158,8 @@ def delete_question_and_its_answers(cursor,question_id):
         sql.SQL("""
                     select answer.id 
                     from answer join question on (answer.question_id=question.id)
-                    where question.id = %s;
-                """), str(question_id)
+                    where question.id = %(question_id)s;
+                """), {"question_id": str(question_id)}
     )
     list_of_dict_with_answer_id_to_delete = cursor.fetchall()
     for dict_with_answer_id in list_of_dict_with_answer_id_to_delete:

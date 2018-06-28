@@ -68,6 +68,8 @@ def display(question_id):
     view_number = logic.count_views(question_id)
     title = logic.get_data_from_certain_row("title", question_id)
     message = logic.get_data_from_certain_row("message", question_id)
+    user_id = logic.get_data_from_certain_row("user_id", question_id)
+    user_in_database = user.current_user
     row = logic.display(question_id)
     dict_table = data_manager.get_list_of_dicts_from_database(answer_table)
     tags = data_manager.get_tags_by_question_id(question_id)
@@ -75,7 +77,7 @@ def display(question_id):
     comment_dict_sorted_by_time = logic.sort_by_time(dict_with_comments)
     return render_template('display_question.html', row=row, question_id=question_id,
                            dict_table=dict_table, message=message, title=title, tags=tags, 
-                           comment_dict_sorted_by_time=comment_dict_sorted_by_time)
+                           comment_dict_sorted_by_time=comment_dict_sorted_by_time, user_in_database=user_in_database, user_id=user_id)
 
 
 # new answer routings
@@ -238,8 +240,27 @@ def log_out():
     user.log_out()
     return redirect('/')
 
+
+@app.route("/answer/<answer_id>/toggle_accepted")
+def toggle_accepted(answer_id):
+    data_manager.toggle_accepted(answer_id)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect('/question/{}'.format(question_id))
+
+@app.route("/user/<user_id>")
+def user_profile(user_id):
+    user_id = int(user_id)
+    question = data_manager.user_questions(user_id)
+    answer = data_manager.user_answers(user_id)
+    comment = data_manager.user_comments(user_id)
+    users_datadict = data_manager.get_list_of_dicts_from_database(user_table)
+    count_question = data_manager.count_user_questions(user_id)
+    count_answer = data_manager.count_user_answers(user_id)
+    count_comment = data_manager.count_user_comments(user_id)
+    return render_template("User_profile.html", users_datadict = users_datadict, count_question = count_question, question = question, count_answer = count_answer,answer = answer,count_comment = count_comment, comment = comment, user_id = user_id)
+
 if __name__ == '__main__':
     app.secret_key = 'webex'  
     app.run(
         debug=True,  
-        port=5000)
+        port=5001)

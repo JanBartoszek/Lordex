@@ -1,4 +1,5 @@
 import csv
+import user
 from collections import OrderedDict
 from psycopg2 import sql, Binary
 import database_common
@@ -88,9 +89,9 @@ def delete_dict_from_database(cursor, table, item_id):
     cursor.execute(
         sql.SQL("""
                     DELETE FROM {}
-                    WHERE id = %s;
+                    WHERE id = %(item_id)s;
                 """).format(sql.Identifier(table)),
-                    str(item_id)
+                    {"item_id": str(item_id)}
                    )
 
 
@@ -201,8 +202,8 @@ def delete_tags_from_question(cursor, question_id):
     cursor.execute(
         sql.SQL("""
                     DELETE FROM question_tag
-                    WHERE question_id = %s;
-                """), str(question_id)
+                    WHERE question_id = %(question_id)s;
+                """), {"question_id": str(question_id)}
                    )
 
 
@@ -211,8 +212,8 @@ def delete_comments_from_question(cursor, question_id):
     cursor.execute(
         sql.SQL("""
                     DELETE FROM comment
-                    WHERE question_id = %s;
-                """), str(question_id)
+                    WHERE question_id = %(question_id)s;
+                """), {"question_id": str(question_id)}
                    )
 
 @database_common.connection_handler
@@ -234,6 +235,16 @@ def check_if_user_in_database_return_name(cursor, user_input):
                     SELECT user_name FROM "user"
                     WHERE user_name = %(user_input)s;
                 """), {'user_input': user_input}
+    )
+
+    
+@database_common.connection_handler
+def user_questions(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "question"
+                    WHERE user_id = %s;
+                """), str(user_id)
                    )
     user = cursor.fetchall()
     return user
@@ -286,5 +297,84 @@ def change_user_reputation(cursor, user_id, reputation_value):
                     WHERE user_id = %(user_id)s;
                 """), {'user_id' : user_id, 'reputation_value' : reputation_value}
                    )
+
+
+@database_common.connection_handler
+def toggle_accepted(cursor, answer_id):
+    cursor.execute("""
+                    UPDATE answer
+                    SET accepted = NOT accepted
+                    WHERE id = (%s);
+                   """, (answer_id,))
+
+
+@database_common.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id):
+    cursor.execute("""
+                    SELECT question.id 
+                    FROM question
+                    JOIN answer on question.id = question_id
+                    WHERE answer.id = (%s);
+                   """, (answer_id,))
+
+    list_of_dicts = cursor.fetchall()
+    return list_of_dicts[0]["id"]
+@database_common.connection_handler
+def user_answers(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "answer"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def user_comments(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT * FROM "comment"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+
+
+@database_common.connection_handler
+def count_user_questions(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "question"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def count_user_answers(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "answer"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
+@database_common.connection_handler
+def count_user_comments(cursor, user_id):
+    cursor.execute(
+        sql.SQL("""
+                    SELECT COUNT(user_id) FROM "comment"
+                    WHERE user_id = %s;
+                """), str(user_id)
+                   )
+    user = cursor.fetchall()
+    return user
+
 
 
